@@ -31,10 +31,13 @@
  *
  * The `key` on this component in ModalLayer is what reloads the fields when Next
  * moves to a different item; see the note there.
+ * 
+ * modal either edits an existing item or makes a new one (new item and add)
+
  */
 import { useRef, useState } from 'react';
 import { ModalNames, useModals } from '../../context/ModalContext.jsx';
-import { useListEditor } from '../../hooks/useListEditor.js';
+import { ItemModalModes, useListEditor } from '../../hooks/useListEditor.js';
 import { DateUtil } from '../../common/DateUtil.js';
 import Modal, { ModalButton, ModalFooter, ModalHeading } from './Modal.jsx';
 
@@ -94,6 +97,8 @@ export default function ItemModal() {
         commit('close');
     }
 
+    const isCreating = itemModal.mode === ItemModalModes.CREATE;
+
     // Next is meaningless on the last item
     const canGoNext = itemModal.index < itemModal.itemCount - 1;
     const canGoPrevious = itemModal.index > 0;
@@ -112,7 +117,7 @@ export default function ItemModal() {
             initialFocusRef={descriptionRef}>
 
             <ModalHeading id="item-modal-heading">
-                {`Item ${itemModal.index + 1} of ${itemModal.itemCount}`}
+                {isCreating ? 'New Item' : `Item ${itemModal.index + 1} of ${itemModal.itemCount}`}
             </ModalHeading>
 
             <form id="item-modal-form" autoComplete="off"
@@ -209,7 +214,7 @@ export default function ItemModal() {
                     </ModalButton>
                     <ModalButton id="item-ok-button" variant="primary"
                                  onClick={() => commit('close')}>
-                        OK
+                        {isCreating ? 'Add' : 'OK'}
                     </ModalButton>
                 </div>
             </ModalFooter>

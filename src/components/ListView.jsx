@@ -29,10 +29,12 @@ import { useUndoRedoShortcuts } from '../hooks/useUndoRedoShortcuts.js';
 import { useLists } from '../context/ListsContext.jsx';
 
 import ItemCard from './ItemCard.jsx';
+import Fab from './Fab.jsx';
 
 export default function ListView() {
     const {
-        list, items, canUndo, canRedo, undo, redo, closeList, requestDeleteItem, requestEditItem, duplicateItem, moveItem, renameList } = useListEditor();
+        list, items, canUndo, canRedo, undo, redo, closeList, requestDeleteItem, 
+        requestEditItem, duplicateItem, moveItem, renameList, requestAddItem } = useListEditor();
     const { listNeedingNameFocus, clearNameFocusRequest } = useLists();
 
     useUndoRedoShortcuts(undo, redo);
@@ -334,6 +336,9 @@ export default function ListView() {
                         </ol>
                     </>
                 )}
+
+                {/* same button as the home screen */}
+                <Fab id="add-item-button" label="Add a new item" onClick={requestAddItem} />
             </div>
         </section>
     );

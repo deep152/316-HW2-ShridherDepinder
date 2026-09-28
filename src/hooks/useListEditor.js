@@ -14,11 +14,14 @@ import { DuplicateItem_Transaction } from '../transactions/DuplicateItem_Transac
 import { EditItem_Transaction } from '../transactions/EditItem_Transaction.js';
 
 import { DeleteItem_Transaction } from '../transactions/DeleteItem_Transaction.js';
-
+import { cloneItem, createListItem, itemValues, valuesAreEqual } from '../model/listItem.js';
+import { AddItem_Transaction } from '../transactions/AddItem_Transaction.js';
 
 /** what the item modal is currently being used for */
 export const ItemModalModes = {
-    EDIT: 'edit'
+    EDIT: 'edit',
+    CREATE: 'create'
+
 };
 
 export function useListEditor() {
@@ -35,17 +38,34 @@ export function useListEditor() {
         });
     }
 
+    /** opens the modal empty, nothing exists until the add is pressed */
+    function requestAddItem() {
+        openItemModal({
+            mode: ItemModalModes.CREATE,
+            index: -1,
+            itemCount: list.items.length,
+            values: {}
+        });
+    }
+
     /**
      * OK or Next in the item modal. Records the edit, or does nothing if
      * nothing changed.
      *
-     * @param {Object} request { mode, index, values, then } where then is
-     * 'close' or 'next' or 'previous'
+     * @param {Object} request { mode, index, values, then } 
+     * where mode is 'edit' or 'create' and then is 'close' 'next' or 'previous'
      */
-    function commitItemModal({ index, values, then = 'close' }) {
+    function commitItemModal({ mode, index, values, then = 'close' }) {
         // the alert opens on top of the item modal, so what was typed is kept
         if (values.description === '') {
             inform({ title: 'A Description Is Required', message: 'Every item needs a description.' });
+            return;
+        }
+
+        // new item gets made here and goes to end of list
+        if (mode === ItemModalModes.CREATE) {
+            addTransaction(new AddItem_Transaction(operations, createListItem(values), list.items.length));
+            closeItemModal();
             return;
         }
 
@@ -109,8 +129,10 @@ export function useListEditor() {
         redo,
         closeList,
         requestEditItem,
+        requestAddItem,
         commitItemModal,
-        duplicateItem,requestDeleteItem,
+        duplicateItem,
+        requestDeleteItem,
         moveItem,
         renameList
     };
