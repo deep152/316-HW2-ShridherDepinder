@@ -2,7 +2,7 @@
  * ItemModal.jsx
  *
  * The modal that pops up on top of a list for viewing and editing one item. It
- * carries a labelled control for each of an item's fields, Next for walking the
+ * carries a labelled control for each of an item's fields, Next and previous for walking the
  * list without closing the box, and OK and Cancel.
  *
  * This modal changes nothing. It reads a set of values in, hands the values the
@@ -38,6 +38,8 @@ import { useListEditor } from '../../hooks/useListEditor.js';
 import { DateUtil } from '../../common/DateUtil.js';
 import Modal, { ModalButton, ModalFooter, ModalHeading } from './Modal.jsx';
 
+import { PriorityUtil } from '../../common/PriorityUtil.js';
+
 export default function ItemModal() {
     const { itemModal, closeItemModal } = useModals();
     const { commitItemModal } = useListEditor();
@@ -48,7 +50,13 @@ export default function ItemModal() {
     // field in a single update
     const [values, setValues] = useState(() => ({
         description: itemModal.values.description ?? '',
-        dateEntered: itemModal.values.dateEntered ?? DateUtil.today()
+        dateEntered: itemModal.values.dateEntered ?? DateUtil.today(),
+
+        // add the 3 new fields set to deafault
+        priority: itemModal.values.priority ?? PriorityUtil.LOW,
+        targetDate: itemModal.values.targetDate ?? '',
+        completed: itemModal.values.completed ?? false
+
     }));
 
     function setField(field, value) {
@@ -67,7 +75,10 @@ export default function ItemModal() {
             values: {
                 ...values,
                 description: values.description.trim(),
-                dateEntered: values.dateEntered || DateUtil.today()
+                dateEntered: values.dateEntered || DateUtil.today(),
+                // empty date field goes back to model as null, not 
+                targetDate: DateUtil.clean(values.targetDate)
+
             },
             then
         });
@@ -85,6 +96,8 @@ export default function ItemModal() {
 
     // Next is meaningless on the last item
     const canGoNext = itemModal.index < itemModal.itemCount - 1;
+    const canGoPrevious = itemModal.index > 0;
+
 
     return (
         <Modal
@@ -120,6 +133,7 @@ export default function ItemModal() {
                         className={CONTROL} />
                 </div>
 
+                                {/* date entered and priority share a row, like figure 3 */}
                 <div className={FIELD_ROW}>
                     <div className={FIELD}>
                         <label className={FIELD_LABEL} htmlFor="item-date-entered-input">Date Entered</label>
@@ -130,11 +144,57 @@ export default function ItemModal() {
                             onChange={(event) => setField('dateEntered', event.target.value)}
                             className={`${CONTROL} min-w-36`} />
                     </div>
+
+                    <div className={FIELD}>
+                        <label className={FIELD_LABEL} htmlFor="item-priority-select">Priority</label>
+                        <select
+                            id="item-priority-select"
+                            value={values.priority}
+                            onChange={(event) => setField('priority', event.target.value)}
+                            className={CONTROL}>
+                            {/* one option per priority, in the order PriorityUtil gives them */}
+                            {PriorityUtil.values().map((priority) => (
+                                <option key={priority} value={priority}>{priority}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+
+                {/* target date and completed are independent, just together here */}
+                <div className={FIELD_ROW}>
+                    <div className={FIELD}>
+                        <label className={FIELD_LABEL} htmlFor="item-target-date-input">Target Date</label>
+                        <input
+                            id="item-target-date-input"
+                            type="date"
+                            aria-label="The date this item is meant to be finished by"
+                            value={values.targetDate}
+                            onChange={(event) => setField('targetDate', event.target.value)}
+                            className={`${CONTROL} min-w-36`} />
+                    </div>
+
+                    {/* wrap whole input in label so word is all clickable */}
+                    <label className="flex flex-1 items-center gap-2 pb-2.5">
+                        <input
+                            type="checkbox"
+                            checked={values.completed}
+                            onChange={(event) => setField('completed', event.target.checked)} />
+                        Completed
+                    </label>
                 </div>
             </form>
 
             <ModalFooter>
+
                 <div className="flex gap-2">
+                    
+                    <ModalButton id="item-previous-button" variant="quiet"
+                                 disabled={!canGoPrevious}
+                                 title="Save and move to the previous item"
+                                 onClick={() => commit('previous')}>
+                        ◀&nbsp;Previous
+                    </ModalButton>
+
                     <ModalButton id="item-next-button" variant="quiet"
                                  disabled={!canGoNext}
                                  title="Save and move to the next item"

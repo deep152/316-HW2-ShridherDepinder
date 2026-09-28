@@ -37,7 +37,7 @@ export function useListEditor() {
      * nothing changed.
      *
      * @param {Object} request { mode, index, values, then } where then is
-     * 'close' or 'next'
+     * 'close' or 'next' or 'previous'
      */
     function commitItemModal({ index, values, then = 'close' }) {
         // the alert opens on top of the item modal, so what was typed is kept
@@ -51,8 +51,11 @@ export function useListEditor() {
             addTransaction(new EditItem_Transaction(operations, index, oldValues, values));
         }
 
+        // next and previous keep the modal open and move it, anything else closes
         if (then === 'next') {
             requestEditItem(index + 1);
+        } else if (then === 'previous') {
+            requestEditItem(index - 1);
         } else {
             closeItemModal();
         }
