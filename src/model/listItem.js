@@ -3,13 +3,14 @@
  *
  * One row inside a Wolfie List. An item is a plain object:
  *
- *     { id, description, dateEntered }
- *
+ * { id, description, dateEntered, priority, targetDate, completed }
+ *  
  * Nothing here ever changes an item. To edit one, build a new object carrying
  * the same id, i.e. { ...item, ...newValues }.
  */
 import { IdGenerator } from '../common/IdGenerator.js';
 import { DateUtil } from '../common/DateUtil.js';
+import { PriorityUtil } from '../common/PriorityUtil.js';
 
 /**
  * @param {Object} values any of the item's fields, the rest get defaults
@@ -20,6 +21,11 @@ export function createListItem(values = {}) {
         id: IdGenerator.next('item'),
         description: '',
         dateEntered: DateUtil.today(),
+
+        // new items start low, no target date, not done
+        priority: PriorityUtil.LOW,
+        targetDate: null,
+        completed: false,
         ...values
     };
 }
@@ -53,6 +59,12 @@ export function itemFromJSON(json) {
     return {
         id: json.id ?? IdGenerator.next('item'),
         description: String(json.description ?? ''),
-        dateEntered: DateUtil.clean(json.dateEntered) ?? DateUtil.today()
+        dateEntered: DateUtil.clean(json.dateEntered) ?? DateUtil.today(),
+
+        // anything not valid priority set low, bad date is null, only acc true === should work
+        priority: PriorityUtil.clean(json.priority),
+        targetDate: DateUtil.clean(json.targetDate),
+        completed: json.completed === true
+
     };
 }
