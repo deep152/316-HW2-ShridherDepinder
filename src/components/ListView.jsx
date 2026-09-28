@@ -326,7 +326,7 @@ export default function ListView() {
                                     dropEdge={dropIndicator.index === index ? dropIndicator.edge : null}
                                     onEdit={() => requestEditItem(index)}
                                     onDuplicate={() => duplicateItem(index)}
-                                    onDelete={() => duplicateItem(index)}
+                                    onDelete={() => requestDeleteItem(index)}
 
                                     onDragStart={handleDragStart}
                                     onDragEnd={endDrag} />

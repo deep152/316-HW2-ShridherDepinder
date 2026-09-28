@@ -7,7 +7,7 @@
  * since removeItemAt doesnt give the removed item back. keeping the same object
  * means it keeps its id through undo and redo
  * 
- * similr code to other transaction.js file
+ * similar shape to DuplicateItem_Transaction
  */
 import { jsTPS_Transaction } from '../lib/jsTPS.js';
 
