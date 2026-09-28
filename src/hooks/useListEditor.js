@@ -13,6 +13,9 @@ import { normalizeListName } from '../model/wolfieList.js';
 import { DuplicateItem_Transaction } from '../transactions/DuplicateItem_Transaction.js';
 import { EditItem_Transaction } from '../transactions/EditItem_Transaction.js';
 
+import { DeleteItem_Transaction } from '../transactions/DeleteItem_Transaction.js';
+
+
 /** what the item modal is currently being used for */
 export const ItemModalModes = {
     EDIT: 'edit'
@@ -21,7 +24,7 @@ export const ItemModalModes = {
 export function useListEditor() {
     const { list, operations, addTransaction, undo, redo, canUndo, canRedo } = useCurrentList();
     const { closeList } = useLists();
-    const { openItemModal, closeItemModal, inform } = useModals();
+    const { openItemModal, closeItemModal, inform, askConfirm } = useModals();
 
     function requestEditItem(index) {
         openItemModal({
@@ -66,6 +69,26 @@ export function useListEditor() {
         addTransaction(new DuplicateItem_Transaction(operations, index, cloneItem(list.items[index])));
     }
 
+    /**
+     * asks first, like deleting a list in HomeView, but this one can be undone
+     *
+     * @param {number} index which item
+     */
+    function requestDeleteItem(index) {
+        const item = list.items[index];
+        askConfirm({
+            title: 'Delete This Item?',
+            message: `"${item.description}" will be removed from this list. You can undo this.`,
+            acceptLabel: 'Delete Item',
+            // only runs on yes. the item is grabbed now, before its gone
+            onAccept: () => addTransaction(new DeleteItem_Transaction(operations, index, item))
+        });
+    }
+
+
+
+
+
     function moveItem(fromIndex, toIndex) {
         if (fromIndex === toIndex) return;
         operations.moveItem(fromIndex, toIndex);
@@ -87,7 +110,7 @@ export function useListEditor() {
         closeList,
         requestEditItem,
         commitItemModal,
-        duplicateItem,
+        duplicateItem,requestDeleteItem,
         moveItem,
         renameList
     };

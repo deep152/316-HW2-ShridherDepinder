@@ -32,7 +32,7 @@ import ItemCard from './ItemCard.jsx';
 
 export default function ListView() {
     const {
-        list, items, canUndo, canRedo, undo, redo, closeList, requestEditItem, duplicateItem, moveItem, renameList } = useListEditor();
+        list, items, canUndo, canRedo, undo, redo, closeList, requestDeleteItem, requestEditItem, duplicateItem, moveItem, renameList } = useListEditor();
     const { listNeedingNameFocus, clearNameFocusRequest } = useLists();
 
     useUndoRedoShortcuts(undo, redo);
@@ -326,6 +326,8 @@ export default function ListView() {
                                     dropEdge={dropIndicator.index === index ? dropIndicator.edge : null}
                                     onEdit={() => requestEditItem(index)}
                                     onDuplicate={() => duplicateItem(index)}
+                                    onDelete={() => duplicateItem(index)}
+
                                     onDragStart={handleDragStart}
                                     onDragEnd={endDrag} />
                             ))}

@@ -7,8 +7,7 @@
  */
 import { DateUtil } from '../common/DateUtil.js';
 import { PriorityUtil } from '../common/PriorityUtil.js';
-import IconButton, { DUPLICATE_GLYPH } from './IconButton.jsx';
-
+import IconButton, { DELETE_GLYPH, DUPLICATE_GLYPH } from './IconButton.jsx';
 // use actual class names rather than text since tailwind runs before app starts 
 const PILL_COLOR = {
     [PriorityUtil.HIGH]: 'bg-priority-high',
@@ -20,7 +19,7 @@ const PILL_COLOR = {
 // this is a comoponent which is a func that returns what to draw
 // contains props (parameters) item,index, etc similar to initializeClone(element, item, index) 
 // onEdit,onDuplicate,etc are funcs ListView passes so the card just call them
-export default function ItemCard({ item, index, dropEdge, onEdit, onDuplicate, onDragStart, onDragEnd }) {
+export default function ItemCard({ item, index, dropEdge, onDelete, onEdit, onDuplicate, onDragStart, onDragEnd }) {
     const label = `Edit the item ${item.description}${item.completed ? ', completed' : ''}`;
 
     // same as listcard, enter/space opens item
@@ -90,7 +89,16 @@ export default function ItemCard({ item, index, dropEdge, onEdit, onDuplicate, o
                     label={`Duplicate the item ${item.description}`}
                     glyph={DUPLICATE_GLYPH}
                     onClick={onDuplicate} />
+                    
+                <IconButton
+                    action="delete-item"
+                    label={`Delete the item ${item.description}`}
+                    glyph={DELETE_GLYPH}
+                    danger
+                    onClick={onDelete} />
             </span>
+
+            
         </li>
     );
 }
