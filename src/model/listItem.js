@@ -61,7 +61,7 @@ export function itemFromJSON(json) {
         description: String(json.description ?? ''),
         dateEntered: DateUtil.clean(json.dateEntered) ?? DateUtil.today(),
 
-        // anything not valid priority set low, bad date is null, only acc true === should work
+        // anything not valid priority is set to low, bad date is null, only acc true === should work
         priority: PriorityUtil.clean(json.priority),
         targetDate: DateUtil.clean(json.targetDate),
         completed: json.completed === true

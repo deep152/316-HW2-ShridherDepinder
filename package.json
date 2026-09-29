@@ -2,7 +2,7 @@
     "name": "cse316-hw2",
     "version": "1.0.0",
     "description": "Wolfie Lists - CSE 316 Homework 2 (starter code). The HW1 application rebuilt in React with functional components, hooks and context, styled with Tailwind.",
-    "author": "CSE 316 - Stony Brook University",
+    "author": "Shridher, Depinder",
     "license": "UNLICENSED",
     "private": true,
     "type": "module",

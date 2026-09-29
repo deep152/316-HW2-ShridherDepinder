@@ -8,7 +8,7 @@
  */
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { DataStorageManager } from '../data/DataStorageManager.js';
-import { buildUnusedName, cloneList, createWolfieList, DEFAULT_LIST_NAME} from '../model/wolfieList.js';
+import { buildUnusedName, cloneList, createWolfieList, DEFAULT_LIST_NAME } from '../model/wolfieList.js';
 import { useModals } from './ModalContext.jsx';
 
 const ListsContext = createContext(null);
@@ -106,7 +106,7 @@ export function ListsProvider({ children }) {
 
     /**
      * not undoable, like creating or deleting a list. 
-     * copy goes right under  original and isnt opened
+     * copy goes right under original and isnt opened
      */
     function duplicateList(listId) {
         const index = lists.findIndex((list) => list.id === listId);

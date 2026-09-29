@@ -32,7 +32,7 @@
  * The `key` on this component in ModalLayer is what reloads the fields when Next
  * moves to a different item; see the note there.
  * 
- * modal either edits an existing item or makes a new one (new item and add)
+ * modal either edits an existing item or makes a new one (it reads item and add)
 
  */
 import { useRef, useState } from 'react';
@@ -79,7 +79,7 @@ export default function ItemModal() {
                 ...values,
                 description: values.description.trim(),
                 dateEntered: values.dateEntered || DateUtil.today(),
-                // empty date field goes back to model as null, not 
+                // empty date field goes back to model as null, not ''
                 targetDate: DateUtil.clean(values.targetDate)
 
             },
@@ -120,9 +120,9 @@ export default function ItemModal() {
             </ModalHeading>
 
             <form id="item-modal-form" autoComplete="off"
-                  onKeyDown={handleFormKeyDown}
-                  onSubmit={(event) => event.preventDefault()}
-                  className="flex flex-col gap-4 p-5">
+                onKeyDown={handleFormKeyDown}
+                onSubmit={(event) => event.preventDefault()}
+                className="flex flex-col gap-4 p-5">
 
                 <div className={FIELD}>
                     <label className={FIELD_LABEL} htmlFor="item-description-input">Description</label>
@@ -137,7 +137,7 @@ export default function ItemModal() {
                         className={CONTROL} />
                 </div>
 
-                 {/* date entered and priority share a row, like figure 3 */}
+                {/* date entered and priority share a row, like figure 3 */}
                 <div className={FIELD_ROW}>
                     <div className={FIELD}>
                         <label className={FIELD_LABEL} htmlFor="item-date-entered-input">Date Entered</label>
@@ -191,28 +191,28 @@ export default function ItemModal() {
             <ModalFooter>
 
                 <div className="flex gap-2">
-                    
+
                     <ModalButton id="item-previous-button" variant="quiet"
-                                 disabled={!canGoPrevious}
-                                 title="Save and move to the previous item"
-                                 onClick={() => commit('previous')}>
+                        disabled={!canGoPrevious}
+                        title="Save and move to the previous item"
+                        onClick={() => commit('previous')}>
                         ◀&nbsp;Previous
                     </ModalButton>
 
                     <ModalButton id="item-next-button" variant="quiet"
-                                 disabled={!canGoNext}
-                                 title="Save and move to the next item"
-                                 onClick={() => commit('next')}>
+                        disabled={!canGoNext}
+                        title="Save and move to the next item"
+                        onClick={() => commit('next')}>
                         Next&nbsp;▶
                     </ModalButton>
                 </div>
                 <div className="ml-auto flex gap-2">
                     <ModalButton id="item-cancel-button" variant="secondary"
-                                 onClick={closeItemModal}>
+                        onClick={closeItemModal}>
                         Cancel
                     </ModalButton>
                     <ModalButton id="item-ok-button" variant="primary"
-                                 onClick={() => commit('close')}>
+                        onClick={() => commit('close')}>
                         {isCreating ? 'Add' : 'OK'}
                     </ModalButton>
                 </div>

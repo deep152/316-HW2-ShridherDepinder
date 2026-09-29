@@ -8,7 +8,7 @@
 import { DateUtil } from '../common/DateUtil.js';
 import { PriorityUtil } from '../common/PriorityUtil.js';
 import IconButton, { DELETE_GLYPH, DUPLICATE_GLYPH } from './IconButton.jsx';
-// use actual class names rather than text since tailwind runs before app starts 
+// use full class names rather than text  
 const PILL_COLOR = {
     [PriorityUtil.HIGH]: 'bg-priority-high',
     [PriorityUtil.MEDIUM]: 'bg-priority-medium',
@@ -23,7 +23,7 @@ export default function ItemCard({ item, index, dropEdge, onDelete, onEdit, onDu
     const label = `Edit the item ${item.description}${item.completed ? ', completed' : ''}`;
 
     // same as listcard, enter/space opens item
-        function handleKeyDown(event) {
+    function handleKeyDown(event) {
         // key pressed on one of the buttons belongs to that button, not the card
         if (event.target !== event.currentTarget) return;
         if (event.key !== 'Enter' && event.key !== ' ') return;
@@ -76,7 +76,7 @@ export default function ItemCard({ item, index, dropEdge, onDelete, onEdit, onDu
                 </span>
             </span>
 
-            {/* when theres no date, no check needed */}
+            {/* when theres no date, it just returns  */}
             <span className="area-target text-center text-[0.875rem] tabular-nums text-grey-700">
                 {DateUtil.format(item.targetDate)}
             </span>
@@ -91,7 +91,7 @@ export default function ItemCard({ item, index, dropEdge, onDelete, onEdit, onDu
                     label={`Duplicate the item ${item.description}`}
                     glyph={DUPLICATE_GLYPH}
                     onClick={onDuplicate} />
-                    
+
                 <IconButton
                     action="delete-item"
                     label={`Delete the item ${item.description}`}
@@ -100,7 +100,7 @@ export default function ItemCard({ item, index, dropEdge, onDelete, onEdit, onDu
                     onClick={onDelete} />
             </span>
 
-            
+
         </li>
     );
 }

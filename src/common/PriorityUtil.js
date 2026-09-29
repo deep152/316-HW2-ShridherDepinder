@@ -9,8 +9,8 @@
 export class PriorityUtil {
     static HIGH = 'High';
     static MEDIUM = 'Medium';
-    static LOW = 'Low';  
-    
+    static LOW = 'Low';
+
     /**
      * @return {string[]} all of the three valid priorities, in display order
      */
@@ -23,7 +23,7 @@ export class PriorityUtil {
      * @return {string} the value itself if its one of the three valid ones or low
      */
     static clean(value) {
-        if(PriorityUtil.values().includes(value)){
+        if (PriorityUtil.values().includes(value)) {
             return value;
         }
         return PriorityUtil.LOW;

@@ -33,7 +33,7 @@ import Fab from './Fab.jsx';
 
 export default function ListView() {
     const {
-        list, items, canUndo, canRedo, undo, redo, closeList, requestDeleteItem, 
+        list, items, canUndo, canRedo, undo, redo, closeList, requestDeleteItem,
         requestEditItem, duplicateItem, moveItem, renameList, requestAddItem } = useListEditor();
     const { listNeedingNameFocus, clearNameFocusRequest } = useLists();
 
@@ -208,7 +208,7 @@ export default function ListView() {
                         aria-label="Close this list and return to the home screen"
                         className={`${TOOLBAR_BUTTON} flex items-center justify-center p-0`}>
                         <img className="h-6 w-auto drop-shadow-[0_0.0625rem_0.125rem_rgba(0,0,0,0.35)]"
-                             src="/images/wolfie-logo.png" alt="" width="1464" height="1054" />
+                            src="/images/wolfie-logo.png" alt="" width="1464" height="1054" />
                     </button>
                     <button
                         id="undo-button" type="button" onClick={undo} disabled={!canUndo}
