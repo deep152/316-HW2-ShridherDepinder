@@ -139,7 +139,6 @@ export function ListsProvider({ children }) {
         closeList: () => setCurrentListId(null),
         createList,
         deleteList,
-        updateList,
         duplicateList,
         updateList,
         clearNameFocusRequest: () => setListNeedingNameFocus(null)
