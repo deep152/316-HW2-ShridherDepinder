@@ -11,7 +11,7 @@
  * that leave the original array alone.
  */
 import { IdGenerator } from '../common/IdGenerator.js';
-import { itemFromJSON } from './listItem.js';
+import { cloneItem, itemFromJSON } from './listItem.js';
 
 export const DEFAULT_LIST_NAME = 'Untitled List';
 export const MAX_NAME_LENGTH = 60;
@@ -35,6 +35,18 @@ export function listFromJSON(json) {
         id: json.id ?? IdGenerator.next('list'),
         name: String(json.name ?? DEFAULT_LIST_NAME),
         items: (Array.isArray(json.items) ? json.items : []).map(itemFromJSON)
+    };
+}
+
+ /**
+ * a copy of the list with the given name. copy and each of its item
+ * get new ids so theyre completely seperate
+ */
+export function cloneList(list, name) {
+    return {
+        id: IdGenerator.next('list'),
+        name: normalizeListName(name),
+        items: list.items.map(cloneItem)
     };
 }
 

@@ -8,7 +8,7 @@
  */
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { DataStorageManager } from '../data/DataStorageManager.js';
-import { buildUnusedName, createWolfieList, DEFAULT_LIST_NAME } from '../model/wolfieList.js';
+import { buildUnusedName, cloneList, createWolfieList, DEFAULT_LIST_NAME} from '../model/wolfieList.js';
 import { useModals } from './ModalContext.jsx';
 
 const ListsContext = createContext(null);
@@ -105,6 +105,21 @@ export function ListsProvider({ children }) {
     }
 
     /**
+     * not undoable, like creating or deleting a list. 
+     * copy goes right under  original and isnt opened
+     */
+    function duplicateList(listId) {
+        const index = lists.findIndex((list) => list.id === listId);
+        if (index < 0) return null;
+
+        const original = lists[index];
+        const copy = cloneList(original, buildUnusedName(lists, `${original.name} (Copy)`));
+        // toSpliced puts it at index + 1 without changing the old array
+        setLists(lists.toSpliced(index + 1, 0, copy));
+        return copy;
+    }
+
+    /**
      * The one way to change a list's contents. updater is given the list and
      * returns its new version. It uses the functional form of setLists, so it
      * works on the latest lists even when a transaction runs long after it was
@@ -124,6 +139,8 @@ export function ListsProvider({ children }) {
         closeList: () => setCurrentListId(null),
         createList,
         deleteList,
+        updateList,
+        duplicateList,
         updateList,
         clearNameFocusRequest: () => setListNeedingNameFocus(null)
     };
