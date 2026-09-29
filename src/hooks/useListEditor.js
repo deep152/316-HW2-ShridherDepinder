@@ -8,7 +8,6 @@
 import { useCurrentList } from '../context/CurrentListContext.jsx';
 import { useLists } from '../context/ListsContext.jsx';
 import { useModals } from '../context/ModalContext.jsx';
-import { cloneItem, itemValues, valuesAreEqual } from '../model/listItem.js';
 import { normalizeListName } from '../model/wolfieList.js';
 import { DuplicateItem_Transaction } from '../transactions/DuplicateItem_Transaction.js';
 import { EditItem_Transaction } from '../transactions/EditItem_Transaction.js';

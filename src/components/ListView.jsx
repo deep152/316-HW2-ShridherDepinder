@@ -349,4 +349,4 @@ const TOOLBAR_BUTTON =
     'h-10 w-10 cursor-pointer rounded-control border-none bg-transparent text-[1.375rem] ' +
     'leading-none text-sbu-white transition-[background-color,opacity] duration-150 ' +
     'hover:not-disabled:bg-white/[0.18] active:not-disabled:bg-black/[0.18] ' +
-    'disabled:cursor-default disabled:opacity-35'
+    'disabled:cursor-default disabled:opacity-35';

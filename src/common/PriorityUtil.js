@@ -28,12 +28,4 @@ export class PriorityUtil {
         }
         return PriorityUtil.LOW;
     }
-
-    /**
-     * @param {string} a priority which should alr be cleaned
-     * @return {string} the CSS class that colors this priority 
-     */
-    static cssClass(value) {
-        return `priority-${PriorityUtil.clean(value).toLowerCase()}`;
-    }
 }

@@ -1,7 +1,7 @@
 /**
  * DeleteItem_Transaction.js
  *
- * this removes one item and puts that item  on undo
+ * this removes one item and puts that same item back on undo
  *
  * item is handed in when this is made, before anything is deleted,
  * since removeItemAt doesnt give the removed item back. keeping the same object

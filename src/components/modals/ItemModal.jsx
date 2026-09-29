@@ -100,9 +100,8 @@ export default function ItemModal() {
     const isCreating = itemModal.mode === ItemModalModes.CREATE;
 
     // Next is meaningless on the last item
-    const canGoNext = itemModal.index < itemModal.itemCount - 1;
-    const canGoPrevious = itemModal.index > 0;
-
+    const canGoNext = !isCreating && itemModal.index < itemModal.itemCount - 1;
+    const canGoPrevious = !isCreating && itemModal.index > 0;
 
     return (
         <Modal
@@ -138,7 +137,7 @@ export default function ItemModal() {
                         className={CONTROL} />
                 </div>
 
-                                {/* date entered and priority share a row, like figure 3 */}
+                 {/* date entered and priority share a row, like figure 3 */}
                 <div className={FIELD_ROW}>
                     <div className={FIELD}>
                         <label className={FIELD_LABEL} htmlFor="item-date-entered-input">Date Entered</label>

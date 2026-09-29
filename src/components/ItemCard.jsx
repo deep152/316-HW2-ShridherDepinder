@@ -23,7 +23,9 @@ export default function ItemCard({ item, index, dropEdge, onDelete, onEdit, onDu
     const label = `Edit the item ${item.description}${item.completed ? ', completed' : ''}`;
 
     // same as listcard, enter/space opens item
-    function handleKeyDown(event) {
+        function handleKeyDown(event) {
+        // key pressed on one of the buttons belongs to that button, not the card
+        if (event.target !== event.currentTarget) return;
         if (event.key !== 'Enter' && event.key !== ' ') return;
         event.preventDefault();
         onEdit();
